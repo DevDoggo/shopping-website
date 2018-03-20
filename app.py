@@ -1,9 +1,17 @@
+import os
+
 from flask import Flask, render_template, request
-import database as db
+from .database import connect, add_product, show 
 app = Flask(__name__)
 
 
-db.connect()
+from .forms import ProductForm
+#from .models import 
+
+db = os.path.dirname(os.path.abspath(__file__)) + "/products.db"
+
+conn, cur = connect(db)
+
 
 
 @app.route('/')
@@ -23,14 +31,15 @@ def Products(prod_id=None):
 
 @app.route('/add', methods=['GET', 'POST'])
 @app.route('/add/<name>', methods=['GET', 'POST'])
-def AddProduct(name="namex"):
+def AddProduct(name="no_name", descr="no_descr"):
     if request.method == 'POST':
-        if request.form["productbtn"] == 'add':
-            db.add_product("namex", "descriptionx")
-        elif request.form["productbtn"] == 'show':
-            db.show()
+        if request.form["productbtn"] == 'add':     #Add Product to Database
+            add_product(cur, name, descr) 
+        elif request.form["productbtn"] == 'show':  #Show all Database Object
+            show(cur)
     
-    return render_template("add_product.html")
+    #product_form = ProductForm(request.form)
+    return render_template("add_product.html")#, form=product_form)
 
 
 @app.route('/cart', methods=['GET', 'POST'])
