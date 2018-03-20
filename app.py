@@ -1,16 +1,22 @@
 import os
 
 from flask import Flask, render_template, request
+from flask_wtf import CSRFProtect
+
 from .database import connect, add_product, show 
+from .forms import ProductForm
+
 app = Flask(__name__)
 
+#csrf
+app.secret_key = 'boye234234234234sdfsd_asdfadsf'#app.config['SECRET_KEY']
+csrf = CSRFProtect(app)
 
-from .forms import ProductForm
-#from .models import 
-
+#database
 db = os.path.dirname(os.path.abspath(__file__)) + "/products.db"
-
 conn, cur = connect(db)
+
+
 
 
 
@@ -38,8 +44,8 @@ def AddProduct(name="no_name", descr="no_descr"):
         elif request.form["productbtn"] == 'show':  #Show all Database Object
             show(cur)
     
-    #product_form = ProductForm(request.form)
-    return render_template("add_product.html")#, form=product_form)
+    product_form = ProductForm(request.form)
+    return render_template("add_product.html", form=product_form)
 
 
 @app.route('/cart', methods=['GET', 'POST'])

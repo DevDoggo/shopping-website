@@ -1,9 +1,18 @@
 
 <h3>add_product</h3>
 
+
+{{ form.hidden_tag }}
+
 <form method="POST", action="/add">
 <button id="button" type="submit" name="productbtn" value="add">Add</button>
 </form>
+
+{% for field in form %}
+	{{ field.label }}
+	{{ field }}
+	<br>
+{% endfor %}
 
 <hr>
 <form method="POST", action="/add">
