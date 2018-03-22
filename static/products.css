@@ -10,8 +10,13 @@ hr{
 	width: 100%;
 }
 
-
 .product{
+	overflow: hidden;
+	border: 1px solid;
+	border-color: purple;
+}
+
+.productlist{
 	padding-left: 50px;
 	border: 1px solid;
 	border-color: purple;

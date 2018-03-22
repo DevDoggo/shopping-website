@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request
 
-from .database import add_product, show, get_all, search_product #, get_new_id
+from .database import add_product, show, get_all, search_product, search_by_id #, get_new_id
 from .forms import ProductForm, SearchForm
 from .app import conn, cur
 
@@ -17,7 +17,7 @@ def Default():
 @blueprint.route('/products/<prod_id>', methods=['GET', 'POST'])
 def Products(prod_id=None):
     search_form = SearchForm(request.form)
-    if (request.method == 'POST'):
+    if request.method == 'POST' and request.form["search"] != '':
         search = request.form["search"]
         search_products = search_product(search, cur)
         products = search_products
@@ -27,13 +27,18 @@ def Products(prod_id=None):
     if (prod_id == None):
         return render_template("products.html", products=products, form=search_form)
     else:
-        return render_template("products.html", prod_id=prod_id, products=products, form=search_form) 
+        product = search_by_id(prod_id, cur)
+        if len(product) > 0 :
+            product = product[0]
+        else:
+            product = ""
+        return render_template("products.html", prod_id=prod_id, product=product, products=products, form=search_form) 
 
 
 @blueprint.route('/add', methods=['GET', 'POST'])
 @blueprint.route('/add/<name>', methods=['GET', 'POST'])
 def AddProduct(name="no_name", description="no_description"):
-    if request.method == 'POST':
+    if request.method == 'POST': # and request.form[""]:
         if request.form["productbtn"] == 'add':     #Add Product to Database
             inp = request.form
             name = inp["name"]

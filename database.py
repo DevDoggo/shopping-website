@@ -30,6 +30,13 @@ def get_all(cur):
 
 def search_product(search, cur):
     cur.execute("SELECT id, name, description from products where id = '" + search + "' or name = '" + search + "' or description = '" + search + "';")
-
     rows = cur.fetchall()
     return rows
+
+def search_by_id(prod_id, cur):
+    cur.execute("SELECT id, name, description from products where id = '" + prod_id + "';")
+    rows = cur.fetchall()
+    return rows
+
+
+
