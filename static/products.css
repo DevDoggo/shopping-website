@@ -15,9 +15,12 @@ hr{
 	padding-left: 50px;
 	border: 1px solid;
 	border-color: purple;
-	width: 50%;
+	width: 40%;
 	margin-top: 20px;
 }
 
+.product-desc{
+	padding-left: 30px;
+}
 
 

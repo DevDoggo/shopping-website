@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request
 
-from .database import add_product, show, get_all, get_new_id
-from .forms import ProductForm
+from .database import add_product, show, get_all, search_product #, get_new_id
+from .forms import ProductForm, SearchForm
 from .app import conn, cur
 
 blueprint = Blueprint('standard', __name__)
@@ -9,20 +9,25 @@ blueprint = Blueprint('standard', __name__)
 
 @blueprint.route('/')
 def Default():
-    get_new_id(cur)
+    show(cur)
     return render_template("default.html")
 
 
 @blueprint.route('/products', methods=['GET', 'POST'])
 @blueprint.route('/products/<prod_id>', methods=['GET', 'POST'])
 def Products(prod_id=None):
+    search_form = SearchForm(request.form)
+    if (request.method == 'POST'):
+        search = request.form["search"]
+        search_products = search_product(search, cur)
+        products = search_products
+        return render_template("products.html", products=products, form=search_form)
+    
     products = get_all(cur)
-#    print(products)
-#    print(type(products[0]))
     if (prod_id == None):
-        return render_template("products.html", products=products)
+        return render_template("products.html", products=products, form=search_form)
     else:
-        return render_template("products.html", prod_id=prod_id, products=products) 
+        return render_template("products.html", prod_id=prod_id, products=products, form=search_form) 
 
 
 @blueprint.route('/add', methods=['GET', 'POST'])
