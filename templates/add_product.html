@@ -1,7 +1,11 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<!--CSS-->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='add_product.css') }}">
+
 
 <h3>add_product</h3>
-
-
 
 <form method="POST", action="/add">
 {{ form.hidden_tag() }}
@@ -24,3 +28,5 @@
 	
 <button id="button2" type="submit" name="productbtn" value="show">Show</button>
 </form>
+
+{% endblock %}
