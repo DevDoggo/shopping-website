@@ -10,7 +10,7 @@ import sqlite3
 def connect(db):
     connection = sqlite3.connect(db)
     cur = connection.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY, name text, description text)")
+    cur.execute("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, description text)")
     connection.commit()
     return(connection, cur)
 
@@ -19,6 +19,16 @@ def add_product(cur, name, description):
     print(cur)
 
 def show(cur):
-    cur.execute("SELECT name, description FROM products")
+    cur.execute("SELECT id, name, description FROM products")
     rows = cur.fetchall()
     print(rows)
+
+def get_all(cur):
+    cur.execute("SELECT id, name, description FROM products")
+    rows = cur.fetchall()
+    return rows
+
+def search_product(search, cur):
+    cur.execute("SELECT id, name, description from products where id= " + search + ";")
+    rows = cur.fetchall()
+    return rows
