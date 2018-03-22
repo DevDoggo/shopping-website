@@ -32,7 +32,9 @@ def Products(prod_id=None):
             product = product[0]
         else:
             product = ""
-        return render_template("products.html", prod_id=prod_id, product=product, products=products, form=search_form) 
+
+        print(product)
+        return render_template("product.html", prod_id=prod_id, product=product, products=products, form=search_form) 
 
 
 @blueprint.route('/add', methods=['GET', 'POST'])

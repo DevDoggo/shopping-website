@@ -1,0 +1,14 @@
+{% extends 'products.html' %}
+
+{% block product %}
+
+{% if product != "" %}
+	<div class="product">
+		{{ product.0 }} : {{ product.1 }} : {{ product.2 }}
+	</div>
+{% else %}
+	<!-- Todo maybe -->
+	
+{% endif %}
+
+{% endblock%}
