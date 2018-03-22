@@ -9,9 +9,10 @@ from wtforms.fields import StringField, IntegerField, DateTimeField, SelectField
 
 
 class ProductForm(Form):
+    prod_id = IntegerField('ID', validators=[validators.InputRequired()])
     name = StringField('Name', validators=[validators.InputRequired()])
-    description = StringField('Name', validators=[validators.InputRequired()])
-
+    description = StringField('Description', validators=[validators.InputRequired()])
+    
 """
 class AdminLoginForm(Form):
     user = StringField('Username', validators=[validators.InputRequired(), user_validator])

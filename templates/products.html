@@ -1,3 +1,18 @@
-<h3>hello</h3>
+{% extends 'master.html' %}
 
-<h4>{{ prod_id}}</h4>
+{% block content %}
+
+
+
+<h3>Products</h3>
+<hr>
+{% for product in products %}
+<div class="product">
+	<p><h3>{{ product.0 }} : {{ product.1 }}</h3></p>
+</div>
+{% endfor %}
+
+
+
+
+{% endblock %}

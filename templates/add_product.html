@@ -2,19 +2,25 @@
 <h3>add_product</h3>
 
 
-{{ form.hidden_tag }}
 
 <form method="POST", action="/add">
-<button id="button" type="submit" name="productbtn" value="add">Add</button>
-</form>
-
+{{ form.hidden_tag() }}
 {% for field in form %}
-	{{ field.label }}
-	{{ field }}
+	{% if field.widget.input_type != "hidden" %}
+		{{ field.label }}
+		{{ field }}
+	{% else %}
+		{{ field }}
+	{% endif %}
 	<br>
 {% endfor %}
 
+
+<button id="button" type="submit" name="productbtn" value="add">Add</button>
+</form>
 <hr>
 <form method="POST", action="/add">
+	{{ form.hidden_tag() }}
+	
 <button id="button2" type="submit" name="productbtn" value="show">Show</button>
 </form>

@@ -9,8 +9,9 @@ from .database import connect
 app = Flask(__name__)
 
 #csrf
-app.secret_key = 'boye234234234234sdfsd_asdfadsf'#app.config['SECRET_KEY']
+app.secret_key = 'bSecret'#app.config['SECRET_KEY']
 csrf = CSRFProtect(app)
+csrf.init_app(app)
 
 #database
 db = os.path.dirname(os.path.abspath(__file__)) + "/products.db"
