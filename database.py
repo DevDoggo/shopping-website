@@ -29,7 +29,7 @@ def get_all(cur):
     return rows
 
 def search_product(search, cur):
-    cur.execute("SELECT id, name, description from products where id = '" + search + "' or name = '" + search + "' or description = '" + search + "';")
+    cur.execute("SELECT id, name, description from products where id LIKE '%" + search + "%' or name LIKE '%" + search + "%' or description LIKE '%" + search + "%';")
     rows = cur.fetchall()
     return rows
 
