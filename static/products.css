@@ -16,17 +16,26 @@ hr{
 	padding-left: 50px;
 	padding-top: 20px;
 	padding-bottom: 20px;
+	height: 450px;
+	padding-right: 40px;
 }
 
 .productlist{
 	padding-left: 50px;
+	padding-right: 40px;
 	border: 1px solid;
 	border-color: purple;
 	margin-bottom: 10px;
+
 }
 
 .product-desc{
 	padding-left: 30px;
 }
 
-
+.moneymaker{
+	border: 1px solid;
+	border-color: purple;
+	height: 450px;
+	padding: 20%;
+}
