@@ -9,7 +9,7 @@ blueprint = Blueprint('standard', __name__)
 
 @blueprint.route('/')
 def Default():
-    show(cur)
+    show_products(cur)
     return redirect(url_for('standard.Products'))
 #    return render_template("default.html")
 
@@ -47,6 +47,11 @@ def Products(prod_id=None):
 @blueprint.route('/add', methods=['GET', 'POST'])
 @blueprint.route('/add/<name>', methods=['GET', 'POST'])
 def AddProduct(name="no_name", description="no_description"):
+    username = get_logged_in_user()
+    if username != "admin":
+        return "Only Admins are allowed to use this page!\
+                <a href='/login'>Login</a>"
+    
     if request.method == 'POST': # and request.form[""]:
         if request.form["productbtn"] == 'add':     #Add Product to Database
             inp = request.form
@@ -64,8 +69,21 @@ def AddProduct(name="no_name", description="no_description"):
     return render_template("add_product.html", form=product_form)
 
 
+@blueprint.route('/cart', methods=['GET', 'POST'])
+def Cart():
+    username = get_logged_in_user()
+    if username != None:
+        return render_template("cart.html", user=username)
+    else:
+        return "<p>You are not logged in!</p> \
+                <a href='\nlogin'>Login</a>"
+
+
 @blueprint.route('/login', methods=['GET', 'POST'])
 def Login():
+
+    
+    
     if request.method == "POST":
         session['username'] = request.form['username']
         return redirect(url_for('standard.Products')) 
@@ -79,10 +97,6 @@ def logout():
    session.pop('username', None)
    return redirect(url_for('standard.Products'))
 
-
-@blueprint.route('/cart', methods=['GET', 'POST'])
-def Cart():
-    return render_template("cart.html")
 
 
 #/////// Helper Functions
