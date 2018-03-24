@@ -11,6 +11,7 @@ from wtforms.fields import StringField, IntegerField, DateTimeField, SelectField
 class ProductForm(Form):
     name = StringField('Name', validators=[validators.InputRequired()])
     description = StringField('Description', validators=[validators.InputRequired()])
+    cost = IntegerField('Cost', validators=[validators.InputRequired()])
 
 class SearchForm(Form):
     search = StringField('Search', validators=[validators.InputRequired()])

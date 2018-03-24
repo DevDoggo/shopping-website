@@ -25,7 +25,7 @@
 		{% for product in products %}
 		<div class="productlist">
 			<p>	
-			<h3>{{ product.0 }} : <a href="{{ product.4 }}">{{ product.1 }}</a> : ${{ product.3 }}</h3>
+			<h3>{{ product.0 }} : <a href="/products/{{ product.0 }}">{{ product.1 }}</a> : ${{ product.3 }}</h3>
 				<h5 class="product-desc">{{ product.2 }}</h5>
 			</p>
 		</div>

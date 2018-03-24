@@ -11,28 +11,27 @@ entries = [['FirsToy', 'This is our first product.', '225'],
         ['SecondToy', 'Second product to our firm!', '775'],
         ['ThirdToy', 'This is not made for children. Run.', '420']]
 
-all_columns = "id, name, description, cost, url"
+all_columns = "id, name, description, cost"
 
 def add_tests(cur):
     for x in entries:
         nm = x[0]
         dc = x[1]
         cs = x[2]
-        
-        url = "/products/9"  
-        cur.execute("INSERT INTO products VALUES (NULL, ?, ?, ?, ?)", (nm, dc, cs, url))
+        cur.execute("INSERT INTO products VALUES (NULL, ?, ?, ?)", (nm, dc, cs))
 
 
 
 def connect(db):
     connection = sqlite3.connect(db)
     cur = connection.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, description text, cost integer, url text)")
+    cur.execute("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, description text, cost integer)")
     connection.commit()
     return(connection, cur)
 
 def add_product(cur, name, description, cost):
-    cur.execute("INSERT INTO products VALUES (NULL, ?, ?, ?, ?)", (name, description, cost, url))
+    url = "/products/9"  
+    cur.execute("INSERT INTO products VALUES (NULL, ?, ?, ?)", (name, description, cost))
     print(cur)
 
 def show(cur):

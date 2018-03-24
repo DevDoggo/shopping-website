@@ -51,7 +51,8 @@ def AddProduct(name="no_name", description="no_description"):
             inp = request.form
             name = inp["name"]
             description = inp["description"]
-            add_product(cur, name, description)
+            cost = inp["cost"]
+            add_product(cur, name, description, cost)
             conn.commit()
         elif request.form["productbtn"] == 'test':  #Show all Database Object
             add_tests(cur)
