@@ -7,9 +7,10 @@ import sqlite3
 #connection = sqlite3.connect(db)
 #cur = connection.cursor()
 
-entries = [['FirsToy', 'This is our first product.', '225'],
+entries = [['FirstToy', 'This is our first product.', '225'],
         ['SecondToy', 'Second product to our firm!', '775'],
-        ['ThirdToy', 'This is not made for children. Run.', '420']]
+        ['ThirdToy', 'This is not made for children. Run.', '420'],
+        ['FourthToy', "We're about to go bankrupt, sadly.", '69']]
 
 all_columns = "id, name, description, cost"
 
@@ -20,8 +21,6 @@ def add_tests(cur):
         cs = x[2]
         cur.execute("INSERT INTO products VALUES (NULL, ?, ?, ?)", (nm, dc, cs))
 
-
-
 def connect(db):
     connection = sqlite3.connect(db)
     cur = connection.cursor()
@@ -30,7 +29,6 @@ def connect(db):
     return(connection, cur)
 
 def add_product(cur, name, description, cost):
-    url = "/products/9"  
     cur.execute("INSERT INTO products VALUES (NULL, ?, ?, ?)", (name, description, cost))
     print(cur)
 

@@ -56,6 +56,7 @@ def AddProduct(name="no_name", description="no_description"):
             conn.commit()
         elif request.form["productbtn"] == 'test':  #Show all Database Object
             add_tests(cur)
+            conn.commit()
         elif request.form["productbtn"] == 'show':
             show(cur)
     product_form = ProductForm(request.form)
