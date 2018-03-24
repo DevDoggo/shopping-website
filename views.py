@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, abort
+from flask_login import login_user
 
 from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, add_tests 
 from .forms import ProductForm, SearchForm, LoginForm
-from .app import conn, cur
+from .app import conn, cur, login_manager
 
 blueprint = Blueprint('standard', __name__)
 
@@ -79,16 +80,28 @@ def Cart():
                 <a href='\nlogin'>Login</a>"
 
 
-@blueprint.route('/login', methods=['GET', 'POST'])
-def Login():
+#@blueprint.route('/login', methods=['GET', 'POST'])
+#def Login(): 
+#    login_form = LoginForm(request.form) 
+#    if request.method == "POST":
+#        session['username'] = request.form['username']
+#        login_user(session['username'])
+#        flash('Login successful.')
+#        next = request.args.get('next')
+#
+#        if not is_safe_url(next):
+#            return abort(400)
+#
+#        return redirect(next or flask.url_for('Default'))
+#    return render_template("login.html", form=login_form)
+    
 
-    
-    
+@blueprint.route('/login', methods=['GET', 'POST'])
+def Login(): 
     if request.method == "POST":
         session['username'] = request.form['username']
+        flash('Successfully logged in!')
         return redirect(url_for('standard.Products')) 
-    else:
-        pass 
     login_form = LoginForm(request.form)
     return render_template("login.html", form=login_form)
 
@@ -108,7 +121,6 @@ def get_logged_in_user():
     else:
         return None
 
-
-
-
-
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
