@@ -21,12 +21,12 @@ def Products(prod_id=None):
         search = request.form["search"]
         search_products = search_product(search, cur)
         products = search_products
-        return render_template("products.html", products=products, form=search_form)
+    else: 
+        products = get_all(cur)
     
-    products = get_all(cur)
-    if (prod_id == None):
+    if (prod_id == None):               # If we don't have a product ID
         return render_template("products.html", products=products, form=search_form)
-    else:
+    else:                               # If we do have a product ID
         product = search_by_id(prod_id, cur)
         if len(product) > 0 :
             product = product[0]
@@ -34,7 +34,7 @@ def Products(prod_id=None):
             product = ""
 
         print(product)
-        return render_template("product.html", prod_id=prod_id, product=product, products=products, form=search_form) 
+        return render_template("products.html", prod_id=prod_id, product=product, products=products, form=search_form) 
 
 
 @blueprint.route('/add', methods=['GET', 'POST'])

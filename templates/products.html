@@ -5,29 +5,45 @@
 
 <h3>Products</h3>
 <hr>
-<form method="POST", action"/products">
-	<div class="search-form">
-		Search:
-		{% for field in form %}
-			{{ field }}
-		{% endfor %}
-		<button type="submit" name="searchbtn" value="search">Search</button>
-		{% block product %}
-		{% endblock%}
+<div class="row">
+	<div class="col">
+		<form method="POST", action"/products">
+			<div class="search-form">
+				Search:
+				{% for field in form %}
+					{{ field }}
+				{% endfor %}
+				<button type="submit" name="searchbtn" value="search">Search</button>
+			</div>
+		</form>
 	</div>
-
-
-
-</form>
-<hr>
-{% for product in products %}
-<div class="productlist">
-	<p>	
-		<h3>{{ product.0 }} : {{ product.1 }}</h3>
-		<h5 class="product-desc">{{ product.2 }}</h5>
-	</p>
 </div>
-{% endfor %}
+
+<hr>
+<div class="row" style="margin-top: 20px;">
+	<div class="col-xl-6">
+		{% for product in products %}
+		<div class="productlist">
+			<p>	
+				<h3>{{ product.0 }} : {{ product.1 }}</h3>
+				<h5 class="product-desc">{{ product.2 }}</h5>
+			</p>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="col-xl-5">
+		{% if product != "" %}
+			<div class="product">
+				<h2>Product: {{ product.1 }} </h2>
+				<h5> ID: {{ product.0 }} </h5>
+				<h4> Description: </h4><span style="padding-left: 30px;">{{ product.2 }}</span>			
+			</div>
+		{% else %}
+					<!-- Todo maybe -->
+		{% endif %}
+	</div>
+</div>
+
 
 
 

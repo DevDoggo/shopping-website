@@ -4,7 +4,9 @@
 
 {% if product != "" %}
 	<div class="product">
-		{{ product.0 }} : {{ product.1 }} : {{ product.2 }}
+		<h2>Product: {{ product.1 }} </h2>
+		<h5> ID: {{ product.0 }} </h5>
+		<h4> Description: </h4><span style="padding-left: 30px;">{{ product.2 }}</span>			
 	</div>
 {% else %}
 	<!-- Todo maybe -->
