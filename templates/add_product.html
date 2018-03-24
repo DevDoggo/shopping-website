@@ -24,9 +24,13 @@
 </form>
 <hr>
 <form method="POST", action="/add">
-	{{ form.hidden_tag() }}
-	
-<button id="button2" type="submit" name="productbtn" value="show">Show</button>
+	{{ form.hidden_tag() }}	
+<button id="button2" type="submit" name="productbtn" value="test">Add Test Entries</button>
 </form>
 
+<hr>
+<form method="POST", action="/add">
+	{{ form.hidden_tag() }}	
+<button id="button2" type="submit" name="productbtn" value="show">Add Test Entries</button>
+</form>
 {% endblock %}
