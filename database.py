@@ -1,11 +1,8 @@
 import os
 import sqlite3
 
-#dbpath= os.path.dirname(os.path.abspath(__file__))
-#db = dbpath + "/products.db"
 
-#connection = sqlite3.connect(db)
-#cur = connection.cursor()
+
 
 entries = [['FirstToy', 'This is our first product.', '225'],
         ['SecondToy', 'Second product to our firm!', '775'],
@@ -24,20 +21,28 @@ def add_tests(cur):
 def connect(db):
     connection = sqlite3.connect(db)
     cur = connection.cursor()
+    #Product Table
     cur.execute("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, description text, cost integer)")
+    #User Table
+    cur.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username text, password text)")
+    #Cart Table
+    cur.execute("CREATE TABLE IF NOT EXISTS carts (id INTEGER PRIMARY KEY AUTOINCREMENT, owner text)")
+    
     connection.commit()
     return(connection, cur)
 
+#====================================================================================================
+#==================================== Products ======================================================
 def add_product(cur, name, description, cost):
     cur.execute("INSERT INTO products VALUES (NULL, ?, ?, ?)", (name, description, cost))
     print(cur)
 
-def show(cur):
+def show_products(cur):
     cur.execute("SELECT " + all_columns + " FROM products")
     rows = cur.fetchall()
     print(rows)
 
-def get_all(cur):
+def get_all_products(cur):
     cur.execute("SELECT " + all_columns + " FROM products")
     rows = cur.fetchall()
     return rows
@@ -47,10 +52,19 @@ def search_product(search, cur):
     rows = cur.fetchall()
     return rows
 
-def search_by_id(prod_id, cur):
+def search_product_by_id(prod_id, cur):
     cur.execute("SELECT " + all_columns +" from products where id = '" + prod_id + "';")
     rows = cur.fetchall()
     return rows
 
+#====================================================================================================
+#==================================== Users =========================================================
+
+def add_user(cur):
+    pass
 
 
+
+
+#====================================================================================================
+#==================================== Carts =========================================================

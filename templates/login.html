@@ -1,0 +1,20 @@
+{% extends 'master.html' %}
+
+{% block content %}
+
+<h3>Choose a temporary username for this session: </h3>
+
+<form method="POST">
+	{{ form.hidden_tag() }}
+	Username:<br>
+	{% for field in form %}
+	{{ field }}
+	<br>
+	{% endfor %}
+	
+  <button id="button2" type="submit" name="loginbtn" value="login">Login</button>
+	
+</form>
+
+
+{% endblock %}

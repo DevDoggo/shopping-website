@@ -5,6 +5,11 @@
 
 <h3>Products</h3>
 <hr>
+{% if user != None %}
+	<div class="userdiv">
+		<h4>Welcome, {{ user }}!</h4> 	
+	</div>
+{% endif %}
 <div class="row">
 	<div class="col">
 		<form method="POST", action"/products">
@@ -34,7 +39,7 @@
 	<div class="col-xl-5">
 		{% if product != "" %}
 			<div class="product">
-				<h2>Product: {{ product.1 }} </h2>
+				<h3>Product: {{ product.1 }} </h3>
 				<h5> ID: {{ product.0 }} </h5>
 				<h4> Description: </h4><span style="padding-left: 30px;">{{ product.2 }}</span>			
 			</div>
