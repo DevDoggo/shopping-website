@@ -74,6 +74,11 @@ def Login():
     login_form = LoginForm(request.form)
     return render_template("login.html", form=login_form)
 
+@blueprint.route('/logout', methods=['GET'])
+def logout():
+   session.pop('username', None)
+   return redirect(url_for('standard.Products'))
+
 
 @blueprint.route('/cart', methods=['GET', 'POST'])
 def Cart():
