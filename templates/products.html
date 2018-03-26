@@ -34,7 +34,7 @@
 				{% for field in form %}
 					{{ field }}
 				{% endfor %}
-				<button type="submit" name="searchbtn" value="search">Search</button>
+				<button type="submit" name="productbtn" value="search">Search</button>
 			</div>
 		</form>
 	</div>
@@ -49,6 +49,10 @@
 			<h3>{{ product.0 }} : <a href="/products/{{ product.0 }}">{{ product.1 }}</a> : ${{ product.3 }}</h3>
 				<h5 class="product-desc">{{ product.2 }}</h5>
 			</p>
+			<form method="POST" style="text-align: right;">
+				{{ form.hidden_tag() }}
+				<button style="background-color: yellow; border: none;" type="submit" name="productbtn" value="{{ product.0 }}">+</button>
+			</form>
 		</div>
 		{% endfor %}
 	</div>

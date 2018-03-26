@@ -55,7 +55,7 @@ def search_product(search, cur):
     rows = cur.fetchall()
     return rows
 
-def search_product_by_id(prod_id, cur):
+def search_product_by_id(cur, prod_id):
     cur.execute("SELECT " + all_columns +" from products where id = '" + prod_id + "';")
     rows = cur.fetchall()
     return rows
@@ -87,8 +87,7 @@ def create_cart(cur, username):
             (id int, name text, description text, cost integer )")
 
 def add_to_cart(cur, username, product):
-    cur.execute("INSERT INTO "+ username + "_cart VALUES (?, ?, ?, ?)", (
-        product[0], product[1], product[2], product[3]))
+    cur.execute("INSERT INTO "+ username + "_cart VALUES (?, ?, ?, ?)", (product[0], product[1], product[2], product[3]))
 
 def get_cart(cur, username):
     cur.execute("SELECT id, name, description, cost FROM " + username + "_cart")

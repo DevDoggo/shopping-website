@@ -17,18 +17,25 @@ def Default():
 @blueprint.route('/products', methods=['GET', 'POST'])
 @blueprint.route('/products/<prod_id>', methods=['GET', 'POST'])
 def Products(prod_id=None):
-
     username = get_logged_in_user()
     
+    print("boyeboye")
     search_form = SearchForm(request.form)
-    if request.method == 'POST' and request.form["search"] != '':
-        search = request.form["search"]
-        search_products = search_product(search, cur)
-        products = search_products
-    else: 
-        products = get_all_products(cur)
-   
+    products = get_all_products(cur)
+    
+    print(request.form)
 
+    if request.method == 'POST':
+        if request.form["productbtn"] == "search":
+            search = request.form["search"]
+            search_products = search_product(search, cur)
+            products = search_products
+        else:
+            prod = (search_product_by_id(cur, request.form["productbtn"]))[0]
+            print(prod)
+            add_to_cart(cur, username, prod)
+            
+     
     product = ""
     if (prod_id != None):               # If we don't have a product ID
         product = search_product_by_id(prod_id, cur)
@@ -78,7 +85,7 @@ def Cart():
                 <a href='\nlogin'>Login</a>"
 
     if request.method == "POST":
-        prod = ['4', 'AnotherOne', 'This one is another one', '$545']
+        prod = ['4', 'AnotherOne', 'This one is another one', '545']
         add_to_cart(cur, username, prod)
         conn.commit()
         print("\nadded\n")
