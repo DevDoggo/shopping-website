@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, abort
 from flask_login import login_user
 
-from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, add_tests 
+from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, add_tests, add_user, get_user, get_all_users 
 from .forms import ProductForm, SearchForm, LoginForm
 from .app import conn, cur, login_manager
 
@@ -80,28 +80,32 @@ def Cart():
                 <a href='\nlogin'>Login</a>"
 
 
-#@blueprint.route('/login', methods=['GET', 'POST'])
-#def Login(): 
-#    login_form = LoginForm(request.form) 
-#    if request.method == "POST":
-#        session['username'] = request.form['username']
-#        login_user(session['username'])
-#        flash('Login successful.')
-#        next = request.args.get('next')
-#
-#        if not is_safe_url(next):
-#            return abort(400)
-#
-#        return redirect(next or flask.url_for('Default'))
-#    return render_template("login.html", form=login_form)
-    
-
 @blueprint.route('/login', methods=['GET', 'POST'])
 def Login(): 
     if request.method == "POST":
-        session['username'] = request.form['username']
-        flash('Successfully logged in!')
-        return redirect(url_for('standard.Products')) 
+        username = request.form['username']
+        password = request.form['password']
+
+        if request.form["loginbtn"] == "login":
+            user = get_user(cur, username, password)
+            if user != None:
+                session['username'] = request.form['username']
+                flash('Successfully logged in!')
+                return redirect(url_for('standard.Products')) 
+            else: 
+                flash('Incorrect login!')
+                print('incorrect login!')
+                #return redirect(url_for('standard.Login'))
+
+        elif request.form["loginbtn"] == "create":
+            add_user(cur, username, password)
+            conn.commit()
+            flash('User was successfully created!')
+            #return redirect(url_for('standard.Login'))
+
+        elif request.form["loginbtn"] == "show":
+            get_all_users(cur)
+
     login_form = LoginForm(request.form)
     return render_template("login.html", form=login_form)
 

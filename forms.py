@@ -18,6 +18,7 @@ class SearchForm(Form):
 
 class LoginForm(Form):
     username = StringField('Username', validators=[validators.InputRequired()])
+    password = StringField('Password', validators=[validators.InputRequired()])
 
 """
 class AdminLoginForm(Form):

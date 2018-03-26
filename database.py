@@ -60,8 +60,23 @@ def search_product_by_id(prod_id, cur):
 #====================================================================================================
 #==================================== Users =========================================================
 
-def add_user(cur):
-    pass
+def add_user(cur, username, password):
+    cur.execute("INSERT INTO users VALUES (NULL, ?, ?)", (username, password))
+
+def get_user(cur, username, password):
+    cur.execute("SELECT username from users where username = '" + username + "' and password = '" + password + "';")
+    rows = cur.fetchall()
+    if len(rows) != 0:
+        return rows[0]
+    else: 
+        return None
+
+def get_all_users(cur):
+    cur.execute("SELECT username, password from users")
+    rows = cur.fetchall()
+    print(rows)
+
+
 
 
 
