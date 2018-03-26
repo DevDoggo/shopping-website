@@ -25,10 +25,21 @@
 <hr>
 <div class="row" style="margin-top: 20px;">
 	<div class="col-xl-5">
-	
+		<form method="POST" action="/cart">
+			{{ form.hidden_tag() }}
+			<button id="button2" type="submit" name="cartbtn" value="add_prod">Add to Cart</button>
+			<button id="button2" type="submit" name="showbtn" value="show_cart">Show Cart</button>
+		</form>
 	</div>
 	<div class="col-xl-5">
-	
+		{% for product in products %}
+			<div class="productlist">
+            	<p> 
+            		<h3>{{ product.0 }} : <a href="/products/{{ product.0 }}">{{ product.1 }}</a> : ${{ product.3 }}</h3>
+                	<h5 class="product-desc">{{ product.2 }}</h5>
+h           	</p>
+          	</div>
+    	{% endfor %}	
 	</div>
 	<div class="col-xl-2">
 		<div class="moneymaker">

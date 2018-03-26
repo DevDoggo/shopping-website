@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, abort
 from flask_login import login_user
 
-from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, add_tests, add_user, get_user, get_all_users 
+from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, add_tests, add_user, get_user, get_all_users, create_cart, add_to_cart, get_cart, show_tables
 from .forms import ProductForm, SearchForm, LoginForm
 from .app import conn, cur, login_manager
 
@@ -73,12 +73,21 @@ def AddProduct(name="no_name", description="no_description"):
 @blueprint.route('/cart', methods=['GET', 'POST'])
 def Cart():
     username = get_logged_in_user()
-    if username != None:
-        return render_template("cart.html", user=username)
-    else:
+    if username == None:
         return "<p>You are not logged in!</p> \
                 <a href='\nlogin'>Login</a>"
 
+    if request.method == "POST":
+        prod = ['4', 'AnotherOne', 'This one is another one', '$545']
+        add_to_cart(cur, username, prod)
+        conn.commit()
+        print("\nadded\n")
+
+    products = get_cart(cur, username)
+    print(products)
+    product_form = ProductForm()
+    return render_template("cart.html", user=username, products=products, form=product_form)
+    
 
 @blueprint.route('/login', methods=['GET', 'POST'])
 def Login(): 
@@ -99,7 +108,10 @@ def Login():
 
         elif request.form["loginbtn"] == "create":
             add_user(cur, username, password)
+            create_cart(cur, username)
             conn.commit()
+
+            print('User was successfully created!')
             flash('User was successfully created!')
             #return redirect(url_for('standard.Login'))
 
@@ -108,6 +120,7 @@ def Login():
 
     login_form = LoginForm(request.form)
     username = get_logged_in_user()
+    show_tables(cur)
     return render_template("login.html", form=login_form, user=username)
 
 @blueprint.route('/logout', methods=['GET'])
