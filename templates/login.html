@@ -2,6 +2,10 @@
 
 {% block content %}
 
+
+{% if user != None %}
+<h2>You're already logged in</h2>
+{% else %}
 <h3>Choose a temporary username for this session: </h3>
 
 <form method="POST">
@@ -16,7 +20,8 @@
 	<button id="button2" type="submit" name="loginbtn" value="login">Login</button>
 	<button id="button2" type="submit" name="loginbtn" value="create">Create</button>
 	<button id="button2" type="submit" name="loginbtn" value="show">Show</button>
-
+	
+	<br>
 	{% with messages = get_flashed_messages() %} 
 		{% if messages %} 
 			{% for message in messages %} 
@@ -26,5 +31,6 @@
 	{% endwith %} 
 </form>
 
-
+{% endif %}
 {% endblock %}
+

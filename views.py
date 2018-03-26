@@ -107,7 +107,8 @@ def Login():
             get_all_users(cur)
 
     login_form = LoginForm(request.form)
-    return render_template("login.html", form=login_form)
+    username = get_logged_in_user()
+    return render_template("login.html", form=login_form, user=username)
 
 @blueprint.route('/logout', methods=['GET'])
 def logout():
@@ -125,6 +126,3 @@ def get_logged_in_user():
     else:
         return None
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get(user_id)
