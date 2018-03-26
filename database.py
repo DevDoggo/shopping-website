@@ -22,11 +22,14 @@ def connect(db):
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     #Product Table
-    cur.execute("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, description text, cost integer)")
+    cur.execute("CREATE TABLE IF NOT EXISTS products \
+            (id INTEGER PRIMARY KEY AUTOINCREMENT, name text, description text, cost integer)")
     #User Table
-    cur.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username text, password text)")
+    cur.execute("CREATE TABLE IF NOT EXISTS users \
+            (id INTEGER PRIMARY KEY AUTOINCREMENT, username text, password text)")
     #Cart Table
-    cur.execute("CREATE TABLE IF NOT EXISTS carts (id INTEGER PRIMARY KEY AUTOINCREMENT, owner text)")
+#    cur.execute("CREATE TABLE IF NOT EXISTS carts \
+#            (id INTEGER PRIMARY KEY AUTOINCREMENT, owner text)")
     
     connection.commit()
     return(connection, cur)
@@ -78,3 +81,12 @@ def get_all_users(cur):
 
 #====================================================================================================
 #==================================== Carts =========================================================
+
+def create_cart(cur, username):
+    cur.execute("CREATE TABLE IF NOT EXISTS " + username + "_cart \
+            (id int, name text, description text, cost integer )")
+
+def add_to_cart(cur, username, product):
+    cur.execute("INSERT INTO +" username + "_cart VALUES (?, ?, ?, ?)", (
+        product[0], product[1], product[2], product[3])))
+
