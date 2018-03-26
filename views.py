@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, abort
 from flask_login import login_user
 
-from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, add_tests, add_user, get_user, get_all_users, create_cart, add_to_cart, get_cart, show_tables
+from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, add_tests, add_user, get_user, get_all_users, create_cart, add_to_cart, get_cart, show_tables, remove_from_cart
 from .forms import ProductForm, SearchForm, LoginForm
 from .app import conn, cur, login_manager
 
@@ -82,11 +82,11 @@ def Cart():
                 <a href='\nlogin'>Login</a>"
 
     if request.method == "POST":
-        prod = ['4', 'AnotherOne', 'This one is another one', '545']
-        add_to_cart(cur, username, prod)
-        conn.commit()
-        print("\nadded\n")
-
+        if request.form["productbtn"] != "":
+            prod_id = request.form["productbtn"]
+            remove_from_cart(cur, username, prod_id)
+            conn.commit() 
+        
     products = get_cart(cur, username)
     print(products)
     product_form = ProductForm()

@@ -51,7 +51,7 @@ def get_all_products(cur):
     return rows
 
 def search_product(search, cur):
-    cur.execute("SELECT id, name, description from products where id LIKE '%" + search + "%' or name LIKE '%" + search + "%' or description LIKE '%" + search + "%';")
+    cur.execute("SELECT id, name, description, cost from products where id LIKE '%" + search + "%' or name LIKE '%" + search + "%' or description LIKE '%" + search + "%';")
     rows = cur.fetchall()
     return rows
 
@@ -94,6 +94,8 @@ def get_cart(cur, username):
     rows = cur.fetchall()
     return rows
 
+def remove_from_cart(cur, username, prod_id):
+    cur.execute("DELETE FROM " + username + "_cart WHERE id = " + prod_id + ";")
 
 
 
