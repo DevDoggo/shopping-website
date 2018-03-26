@@ -19,12 +19,9 @@ def Default():
 def Products(prod_id=None):
     username = get_logged_in_user()
     
-    print("boyeboye")
     search_form = SearchForm(request.form)
     products = get_all_products(cur)
     
-    print(request.form)
-
     if request.method == 'POST':
         if request.form["productbtn"] == "search":
             search = request.form["search"]
@@ -33,8 +30,8 @@ def Products(prod_id=None):
         else:
             prod = (search_product_by_id(cur, request.form["productbtn"]))[0]
             print(prod)
-            add_to_cart(cur, username, prod)
-            
+            add_to_cart(cur, username, prod) 
+            conn.commit()
      
     product = ""
     if (prod_id != None):               # If we don't have a product ID
@@ -110,17 +107,13 @@ def Login():
                 return redirect(url_for('standard.Products')) 
             else: 
                 flash('Incorrect login!')
-                print('incorrect login!')
-                #return redirect(url_for('standard.Login'))
 
         elif request.form["loginbtn"] == "create":
             add_user(cur, username, password)
             create_cart(cur, username)
             conn.commit()
 
-            print('User was successfully created!')
             flash('User was successfully created!')
-            #return redirect(url_for('standard.Login'))
 
         elif request.form["loginbtn"] == "show":
             get_all_users(cur)
