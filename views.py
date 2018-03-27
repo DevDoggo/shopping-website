@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, abort
 from flask_login import login_user
 
-from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, add_tests, add_user, get_user, get_all_users, create_cart, add_to_cart, get_cart, show_tables, remove_from_cart
+from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, remove_product, add_tests, add_user, get_user, get_all_users, create_cart, add_to_cart, get_cart, show_tables, remove_from_cart
 from .forms import ProductForm, SearchForm, LoginForm
 from .app import conn, cur, login_manager
 
@@ -25,7 +25,7 @@ def Products(prod_id=None):
     if request.method == 'POST':
         if request.form["productbtn"] == "search":
             search = request.form["search"]
-            search_products = search_product(search, cur)
+            search_products = search_product(cur, search)
             products = search_products
         else:
             prod = (search_product_by_id(cur, request.form["productbtn"]))[0]
@@ -58,20 +58,27 @@ def AddProduct(name="no_name", description="no_description"):
                 <a href='/login'>Login</a>"
     
     if request.method == 'POST': # and request.form[""]:
-        if request.form["productbtn"] == 'add':     #Add Product to Database
-            inp = request.form
-            name = inp["name"]
-            description = inp["description"]
-            cost = inp["cost"]
-            add_product(cur, name, description, cost)
+        if "productbtn" in request.form:
+            if request.form["productbtn"] == 'add':     #Add Product to Database
+                inp = request.form
+                name = inp["name"]
+                description = inp["description"]
+                cost = inp["cost"]
+                add_product(cur, name, description, cost)
+                conn.commit()
+            elif request.form["productbtn"] == 'test':  #Show all Database Object
+                add_tests(cur)
+                conn.commit()
+        
+        if "deletebtn" in request.form: 
+            remove_product(cur, request.form["deletebtn"])
             conn.commit()
-        elif request.form["productbtn"] == 'test':  #Show all Database Object
-            add_tests(cur)
-            conn.commit()
-        elif request.form["productbtn"] == 'show':
-            show(cur)
+        if "editbtn" in request.form:
+            print(get_all_products(cur))
+
+    products = get_all_products(cur)
     product_form = ProductForm(request.form)
-    return render_template("add_product.html", form=product_form)
+    return render_template("add_product.html", form=product_form, products=products)
 
 
 @blueprint.route('/cart', methods=['GET', 'POST'])

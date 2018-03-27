@@ -4,33 +4,44 @@
 <!--CSS-->
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='add_product.css') }}">
 
-
 <h3>add_product</h3>
 
-<form method="POST", action="/add">
-{{ form.hidden_tag() }}
-{% for field in form %}
-	{% if field.widget.input_type != "hidden" %}
-		{{ field.label }}
-		{{ field }}
-	{% else %}
-		{{ field }}
-	{% endif %}
-	<br>
-{% endfor %}
+<div class="row">
+	<div class="col-xl-6">
+		<form method="POST", action="/add">
+		{{ form.hidden_tag() }}
+		{% for field in form %}
+			{% if field.widget.input_type != "hidden" %}
+				{{ field.label }}
+				{{ field }}
+			{% else %}
+				{{ field }}
+			{% endif %}
+			<br>
+		{% endfor %}
 
 
-<button id="button" type="submit" name="productbtn" value="add">Add</button>
-</form>
-<hr>
-<form method="POST">
-	{{ form.hidden_tag() }}	
-<button id="button2" type="submit" name="productbtn" value="test">Add Test Entries</button>
-</form>
-
-<hr>
-<form method="POST">
-	{{ form.hidden_tag() }}	
-<button id="button2" type="submit" name="productbtn" value="show">Show</button>
-</form>
+		<button id="button" type="submit" name="productbtn" value="add">Add</button>
+			{{ form.hidden_tag() }}	
+		<button id="button2" type="submit" name="productbtn" value="test">Add Test Entries</button>
+			{{ form.hidden_tag() }}	
+		<button id="button2" type="submit" name="productbtn" value="show">Show</button>
+		</form>
+	</div>
+	<div class="col-xl-5">
+		{% for product in products %}
+            <div class="productlist">
+                <p>
+                    <h3>{{ product.0 }} : <a href="/products/{{ product.0 }}">{{ product.1 }}</a> : ${{ product.3 }}</h3>
+                    <h5 class="product-desc">{{ product.2 }}</h5>
+                </p>
+                <form method="POST" style="text-align: right;">
+                    {{ form.hidden_tag() }}
+                    <button style="border: none;" type="submit" name="editbtn" value="{{ product.0 }}">Edit</button>
+                    <button style="border: none;" type="submit" name="deletebtn" value="{{ product.0 }}">Delete</button>
+                </form>
+            </div>
+        {% endfor %}	
+	</div>
+</div>
 {% endblock %}

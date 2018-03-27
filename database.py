@@ -50,7 +50,7 @@ def get_all_products(cur):
     rows = cur.fetchall()
     return rows
 
-def search_product(search, cur):
+def search_product(cur, search):
     cur.execute("SELECT id, name, description, cost from products where id LIKE '%" + search + "%' or name LIKE '%" + search + "%' or description LIKE '%" + search + "%';")
     rows = cur.fetchall()
     return rows
@@ -59,6 +59,16 @@ def search_product_by_id(cur, prod_id):
     cur.execute("SELECT " + all_columns +" from products where id = '" + prod_id + "';")
     rows = cur.fetchall()
     return rows
+
+def remove_product(cur, prod_id):
+    cur.execute("DELETE FROM products WHERE id = " + prod_id + ";")
+    users = get_all_users(cur)
+    print(users)
+    for user in users:
+        username = user[0]
+        print(username)
+        remove_from_cart(cur, str(username), prod_id)
+
 
 #====================================================================================================
 #==================================== Users =========================================================
@@ -77,7 +87,7 @@ def get_user(cur, username, password):
 def get_all_users(cur):
     cur.execute("SELECT username, password from users")
     rows = cur.fetchall()
-    print(rows)
+    return(rows)
 
 #====================================================================================================
 #==================================== Carts =========================================================
