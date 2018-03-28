@@ -69,6 +69,8 @@ def remove_product(cur, prod_id):
         print(username)
         remove_from_cart(cur, str(username), prod_id)
 
+def edit_product(cur, prod_id, name, description, cost):
+    cur.execute("UPDATE products SET name = '"+ name +"', description = '"+ description +"', cost = '"+ cost +"' WHERE id = '"+ prod_id + "';")
 
 #====================================================================================================
 #==================================== Users =========================================================

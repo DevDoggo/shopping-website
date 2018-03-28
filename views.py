@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, abort
 from flask_login import login_user
 
-from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, remove_product, add_tests, add_user, get_user, get_all_users, create_cart, add_to_cart, get_cart, show_tables, remove_from_cart
+from .database import add_product, show_products, get_all_products, search_product, search_product_by_id, remove_product, add_tests, add_user, get_user, get_all_users, create_cart, add_to_cart, get_cart, show_tables, remove_from_cart, edit_product
 from .forms import ProductForm, SearchForm, LoginForm
 from .app import conn, cur, login_manager
 
@@ -57,6 +57,8 @@ def AddProduct(name="no_name", description="no_description"):
         return "Only Admins are allowed to use this page!\
                 <a href='/login'>Login</a>"
     
+    products = get_all_products(cur)
+    product_form = ProductForm(request.form)
     if request.method == 'POST': # and request.form[""]:
         if "productbtn" in request.form:
             if request.form["productbtn"] == 'add':     #Add Product to Database
@@ -68,16 +70,26 @@ def AddProduct(name="no_name", description="no_description"):
                 conn.commit()
             elif request.form["productbtn"] == 'test':  #Show all Database Object
                 add_tests(cur)
-                conn.commit()
-        
+                conn.commit() 
         if "deletebtn" in request.form: 
             remove_product(cur, request.form["deletebtn"])
             conn.commit()
         if "editbtn" in request.form:
             print(get_all_products(cur))
+            edit_form = ProductForm(request.form)    
+            prod_id = request.form["editbtn"]
+            product = search_product_by_id(cur, prod_id)[0]
+            return render_template("add_product.html", product=product, form=product_form, edit_form=edit_form, products=products)
+        if "save_edit_btn" in request.form:
+            prod_id = request.form["save_edit_btn"]
+            name = request.form["name"]
+            description = request.form["description"]
+            cost = request.form["cost"]
+            edit_product(cur, prod_id, name, description, cost)
+            conn.commit()
+             
+            products= get_all_products(cur)
 
-    products = get_all_products(cur)
-    product_form = ProductForm(request.form)
     return render_template("add_product.html", form=product_form, products=products)
 
 

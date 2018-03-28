@@ -22,10 +22,28 @@
 
 
 		<button id="button" type="submit" name="productbtn" value="add">Add</button>
-			{{ form.hidden_tag() }}	
 		<button id="button2" type="submit" name="productbtn" value="test">Add Test Entries</button>
-			{{ form.hidden_tag() }}	
 		<button id="button2" type="submit" name="productbtn" value="show">Show</button>
+		</form>
+
+		{% if edit_form is defined %}
+
+		<form method="POST", action="/add">
+			<hr>
+			<h2>Edit your stuff</h2>
+			{% for field in edit_form %}
+				{% if field.widget.input_type != "hidden" %}
+					{{ field.label }}
+					{{ field }}
+					<br>
+				{% else %}
+					{{ field }}
+				{% endif %}
+			{% endfor %}
+	
+			<button id="button" type="submit" name="save_edit_btn" value={{ product.0 }}>Save Edit</button>
+		{% endif %}
+
 		</form>
 	</div>
 	<div class="col-xl-5">
