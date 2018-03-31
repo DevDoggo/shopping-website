@@ -23,17 +23,16 @@ def Products(prod_id=None):
     search_form = SearchForm(request.form)
     products = db.get_all_products(cur)
     
-    if request.method == 'POST' and search_form.validate():
-        if "search_btn" in request.form:
+    if request.method == 'POST':
+        if "search_btn" in request.form and search_form.validate():
             search = request.form["search"]
-            products = db.search_product(cur, search) 
-        else:
-            prod = db.search_product_by_id(cur, request.form["productbtn"])[0]
-            db.add_to_cart(cur, username, prod) 
-            conn.commit()
-    elif request.method == 'POST':
-        print("You need to search for something!")
-     
+            products = db.search_product(cur, search)  
+        elif "productbtn" in request.form:
+            prod = db.search_product_by_id(cur, request.form["productbtn"])
+            db.add_to_cart(cur,conn, username, prod) 
+            #conn.commit()
+
+    product = None
     if (prod_id != None):               # If we don't have a product ID
         prod = db.search_product_by_id(cur, prod_id)
         product = prod
@@ -56,21 +55,21 @@ def AddProduct(name="no_name", description="no_description"):
     
     products = db.get_all_products(cur)
     product_form = ProductForm(request.form)
-    if request.method == 'POST': # and request.form[""]:
-        if "productbtn" in request.form:
-            if request.form["productbtn"] == 'add':     #Add Product to Database
-                name = request.form["name"]
-                description = request.form["description"]
-                cost = request.form["cost"]
-                db.add_product(cur, name, description, cost)
-                conn.commit()
-            elif request.form["productbtn"] == 'test':  #Show all Database Object
-                db.add_tests(cur)
-                conn.commit() 
-        if "deletebtn" in request.form: 
-            db.remove_product(cur, request.form["deletebtn"])
-            conn.commit()
-        if "editbtn" in request.form:
+
+    if request.method == 'POST' and product_form.validate(): # and request.form[""]:
+        if "addprod_btn" in request.form: 
+            name = request.form["name"]
+            description = request.form["description"]
+            cost = request.form["cost"]
+            db.add_product(cur, conn, name, description, cost)
+            #conn.commit()
+        elif "testprod_btn" in request.form:
+            db.add_tests(cur)
+            conn.commit() 
+        elif "deletebtn" in request.form: 
+            db.remove_product(cur, conn, request.form["deletebtn"])
+            #conn.commit()
+        elif "editbtn" in request.form:
             edit_form = ProductForm(request.form)    
             prod_id = request.form["editbtn"]
             product = db.search_product_by_id(cur, prod_id)[0]
@@ -79,15 +78,17 @@ def AddProduct(name="no_name", description="no_description"):
                     form=product_form, 
                     edit_form=edit_form, 
                     products=products)
-        if "save_edit_btn" in request.form:
+        elif "save_edit_btn" in request.form:
             prod_id = request.form["save_edit_btn"]
             name = request.form["name"]
             description = request.form["description"]
             cost = request.form["cost"]
-            db.edit_product(cur, prod_id, name, description, cost)
-            conn.commit()
-             
+            db.edit_product(cur, conn, prod_id, name, description, cost)
+            #conn.commit() 
             products= db.get_all_products(cur)
+            
+        elif request.method == 'POST':
+            print("naaa boii, you need to give some input!")
 
     return render_template("add_product.html", form=product_form, products=products)
 
@@ -101,10 +102,10 @@ def Cart():
 
     if request.method == "POST" and request.form["productbtn"] != "":
         prod_id = request.form["productbtn"]
-        db.remove_from_cart(cur, username, prod_id)
-        conn.commit() 
+        db.remove_from_cart(cur, conn, username, prod_id)
+        #conn.commit() 
         
-    products = get_cart(cur, username)
+    products = db.get_cart(cur, username)
     product_form = ProductForm()
     return render_template("cart.html", user=username, products=products, form=product_form)
     
@@ -125,9 +126,9 @@ def Login():
                 flash('Incorrect login!')
 
         elif request.form["loginbtn"] == "create":
-            db.add_user(cur, username, password)
-            db.create_cart(cur, username)
-            conn.commit()
+            db.add_user(cur, conn username, password)
+            db.create_cart(cur, conn, username)
+            #conn.commit()
 
             flash('User was successfully created!')
 

@@ -30,9 +30,10 @@ def connect(db):
 
 #====================================================================================================
 #==================================== Products ======================================================
-def add_product(cur, name, description, cost):
+def add_product(cur, conn, name, description, cost):
     cur.execute("INSERT INTO products VALUES (NULL, ?, ?, ?)", (name, description, cost))
     print(cur)
+    conn.commit()
 
 def show_products(cur):
     cur.execute("SELECT " + all_columns + " FROM products")
@@ -57,7 +58,7 @@ def search_product_by_id(cur, prod_id):
     else:
         return None
 
-def remove_product(cur, prod_id):
+def remove_product(cur, conn, prod_id):
     cur.execute("DELETE FROM products WHERE id = " + prod_id + ";")
     users = get_all_users(cur)
     print(users)
@@ -65,15 +66,18 @@ def remove_product(cur, prod_id):
         username = user[0]
         print(username)
         remove_from_cart(cur, str(username), prod_id)
+    conn.commit()
 
-def edit_product(cur, prod_id, name, description, cost):
+def edit_product(cur, conn, prod_id, name, description, cost):
     cur.execute("UPDATE products SET name = '"+ name +"', description = '"+ description +"', cost = '"+ cost +"' WHERE id = '"+ prod_id + "';")
+    conn.commit()
 
 #====================================================================================================
 #==================================== Users =========================================================
 
-def add_user(cur, username, password):
+def add_user(cur, conn, username, password):
     cur.execute("INSERT INTO users VALUES (NULL, ?, ?)", (username, password))
+    conn.commit()
 
 def get_user(cur, username, password):
     cur.execute("SELECT username from users where username = '" + username + "' and password = '" + password + "';")
@@ -91,20 +95,23 @@ def get_all_users(cur):
 #====================================================================================================
 #==================================== Carts =========================================================
 
-def create_cart(cur, username):
+def create_cart(cur, conn, username):
     cur.execute("CREATE TABLE IF NOT EXISTS " + username + "_cart \
             (id int, name text, description text, cost integer )")
+    conn.commit()
 
-def add_to_cart(cur, username, product):
+def add_to_cart(cur, conn, username, product):
     cur.execute("INSERT INTO "+ username + "_cart VALUES (?, ?, ?, ?)", (product[0], product[1], product[2], product[3]))
+    conn.commit()
 
 def get_cart(cur, username):
     cur.execute("SELECT id, name, description, cost FROM " + username + "_cart")
     rows = cur.fetchall()
     return rows
 
-def remove_from_cart(cur, username, prod_id):
+def remove_from_cart(cur, conn, username, prod_id):
     cur.execute("DELETE FROM " + username + "_cart WHERE id = " + prod_id + ";")
+    conn.commit()
 
 
 
