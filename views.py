@@ -126,7 +126,7 @@ def Login():
                 flash('Incorrect login!')
 
         elif request.form["loginbtn"] == "create":
-            db.add_user(cur, conn username, password)
+            db.add_user(cur, conn, username, password)
             db.create_cart(cur, conn, username)
             #conn.commit()
 
