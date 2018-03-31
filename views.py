@@ -55,9 +55,10 @@ def AddProduct(name="no_name", description="no_description"):
     
     products = db.get_all_products(cur)
     product_form = ProductForm(request.form)
+    edit_form = ProductForm(request.form)   
 
-    if request.method == 'POST' and product_form.validate(): # and request.form[""]:
-        if "addprod_btn" in request.form: 
+    if request.method == 'POST': # and request.form[""]:
+        if "addprod_btn" in request.form and product_form.validate():
             name = request.form["name"]
             description = request.form["description"]
             cost = request.form["cost"]
@@ -70,26 +71,27 @@ def AddProduct(name="no_name", description="no_description"):
             db.remove_product(cur, conn, request.form["deletebtn"])
             #conn.commit()
         elif "editbtn" in request.form:
-            edit_form = ProductForm(request.form)    
             prod_id = request.form["editbtn"]
-            product = db.search_product_by_id(cur, prod_id)[0]
+            product = db.search_product_by_id(cur, prod_id)
             return render_template("add_product.html", 
                     product=product, 
                     form=product_form, 
                     edit_form=edit_form, 
                     products=products)
-        elif "save_edit_btn" in request.form:
+        elif "save_edit_btn" in request.form and edit_form.validate():
             prod_id = request.form["save_edit_btn"]
+            print(prod_id)
+            print(request.form)
             name = request.form["name"]
             description = request.form["description"]
             cost = request.form["cost"]
             db.edit_product(cur, conn, prod_id, name, description, cost)
             #conn.commit() 
-            products= db.get_all_products(cur)
             
-        elif request.method == 'POST':
+        else:
             print("naaa boii, you need to give some input!")
 
+    products = db.get_all_products(cur)
     return render_template("add_product.html", form=product_form, products=products)
 
 
