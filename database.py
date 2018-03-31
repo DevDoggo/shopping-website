@@ -1,9 +1,6 @@
 import os
 import sqlite3
 
-
-
-
 entries = [['FirstToy', 'This is our first product.', '225'],
         ['SecondToy', 'Second product to our firm!', '775'],
         ['ThirdToy', 'This is not made for children. Run.', '420'],
@@ -27,10 +24,7 @@ def connect(db):
     #User Table
     cur.execute("CREATE TABLE IF NOT EXISTS users \
             (id INTEGER PRIMARY KEY AUTOINCREMENT, username text, password text)")
-    #Cart Table
-#    cur.execute("CREATE TABLE IF NOT EXISTS carts \
-#            (id INTEGER PRIMARY KEY AUTOINCREMENT, owner text)")
-    
+   
     connection.commit()
     return(connection, cur)
 
@@ -58,7 +52,10 @@ def search_product(cur, search):
 def search_product_by_id(cur, prod_id):
     cur.execute("SELECT " + all_columns +" from products where id = '" + prod_id + "';")
     rows = cur.fetchall()
-    return rows
+    if len(rows) > 0:
+        return rows[0]
+    else:
+        return None
 
 def remove_product(cur, prod_id):
     cur.execute("DELETE FROM products WHERE id = " + prod_id + ";")

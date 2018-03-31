@@ -34,7 +34,7 @@
 				{% for field in form %}
 					{{ field }}
 				{% endfor %}
-				<button type="submit" name="productbtn" value="search">Search</button>
+				<button type="submit" name="search_btn" value="search">Search</button>
 			</div>
 		</form>
 	</div>
@@ -51,13 +51,13 @@
 			</p>
 			<form method="POST" style="text-align: right;">
 				{{ form.hidden_tag() }}
-				<button style="background-color: yellow; border: none;" type="submit" name="productbtn" value="{{ product.0 }}">+</button>
+				<button style="background-color: yellow; border: none;" type="submit" name="addprodbtn" value="{{ product.0 }}">+</button>
 			</form>
 		</div>
 		{% endfor %}
 	</div>
 	<div class="col-xl-5">
-		{% if product != "" %}
+		{% if product is defined and product != None %}
 			<div class="product">
 				<h3>Product: {{ product.1 }} </h3>
 				<h5> ID: {{ product.0 }} </h5>
