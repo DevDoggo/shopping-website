@@ -97,20 +97,21 @@ def get_all_users(cur):
 
 def create_cart(cur, conn, username):
     cur.execute("CREATE TABLE IF NOT EXISTS " + username + "_cart \
-            (id int, name text, description text, cost integer )")
+            (primary_id INTEGER PRIMARY KEY AUTOINCREMENT, prod_id int, name text, description text, cost integer )")
     conn.commit()
 
 def add_to_cart(cur, conn, username, product):
-    cur.execute("INSERT INTO "+ username + "_cart VALUES (?, ?, ?, ?)", (product[0], product[1], product[2], product[3]))
+    cur.execute("INSERT INTO "+ username + "_cart VALUES (NULL, ?, ?, ?, ?)", (product[0], product[1], product[2], product[3]))
     conn.commit()
 
 def get_cart(cur, username):
-    cur.execute("SELECT id, name, description, cost FROM " + username + "_cart")
+    cur.execute("SELECT primary_id, prod_id, name, description, cost FROM " + username + "_cart")
     rows = cur.fetchall()
     return rows
 
-def remove_from_cart(cur, conn, username, prod_id):
-    cur.execute("DELETE FROM " + username + "_cart WHERE id = " + prod_id + ";")
+def remove_from_cart(cur, conn, username, primary_id):
+    show_tables(cur)
+    cur.execute("DELETE FROM " + username + "_cart WHERE primary_id = " + primary_id + ";")
     conn.commit()
 
 

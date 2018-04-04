@@ -8,7 +8,7 @@
 
 <div class="row">
 	<div class="col-xl-6">
-		<form method="POST", action="/add">
+		<form method="POST">
 		{{ form.hidden_tag() }}
 		{% for field in form %}
 			{% if field.widget.input_type != "hidden" %}
@@ -28,9 +28,9 @@
 
 		{% if edit_form is defined %}
 
-		<form method="POST", action="/add">
+		<form method="POST">
 			<hr>
-			<h2>Edit your stuff</h2>
+			<h2>Edit your stuff: ID {{ product.0 }}</h2>
 			{% for field in edit_form %}
 				{% if field.widget.input_type != "hidden" %}
 					{{ field.label }}

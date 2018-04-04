@@ -30,12 +30,12 @@
 		{% for product in products %}
 			<div class="productlist">
             	<p> 
-            		<h3>{{ product.0 }} : <a href="/products/{{ product.0 }}">{{ product.1 }}</a> : ${{ product.3 }}</h3>
-                	<h5 class="product-desc">{{ product.2 }}</h5>
+            		<h3>{{ product.1 }} : <a href="/products/{{ product.1 }}">{{ product.2 }}</a> : ${{ product.4 }}</h3>
+                	<h5 class="product-desc">{{ product.3 }}</h5>
 	           	</p>
                 <form method="POST" style="text-align: right;">
                     {{ form.hidden_tag() }}
-                    <button style="background-color: red; border: none;" type="submit" name="productbtn" value    ="{{ product.0 }}">-</button>
+                    <button style="background-color: red; border: none;" type="submit" name="productbtn" value="{{ product.0 }}">-</button>
 				</form>
 			</div>
     	{% endfor %}	

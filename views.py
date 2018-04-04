@@ -45,9 +45,9 @@ def Products(prod_id=None):
                 form=search_form) 
 
 
-@blueprint.route('/add', methods=['GET', 'POST'])
-@blueprint.route('/add/<name>', methods=['GET', 'POST'])
-def AddProduct(name="no_name", description="no_description"):
+@blueprint.route('/admin', methods=['GET', 'POST'])
+@blueprint.route('/admin/<name>', methods=['GET', 'POST'])
+def Admin(name="no_name", description="no_description"):
     username = get_logged_in_user()
     if username != "admin":
         return "Only Admins are allowed to use this page!\
@@ -73,7 +73,8 @@ def AddProduct(name="no_name", description="no_description"):
         elif "editbtn" in request.form:
             prod_id = request.form["editbtn"]
             product = db.search_product_by_id(cur, prod_id)
-            return render_template("add_product.html", 
+            return render_template("admin.html", 
+                    user=username,
                     product=product, 
                     form=product_form, 
                     edit_form=edit_form, 
@@ -92,7 +93,7 @@ def AddProduct(name="no_name", description="no_description"):
             print("naaa boii, you need to give some input!")
 
     products = db.get_all_products(cur)
-    return render_template("add_product.html", form=product_form, products=products)
+    return render_template("admin.html", user=username, form=product_form, products=products)
 
 
 @blueprint.route('/cart', methods=['GET', 'POST'])
@@ -103,9 +104,9 @@ def Cart():
                 <a href='\nlogin'>Login</a>"
 
     if request.method == "POST" and request.form["productbtn"] != "":
-        prod_id = request.form["productbtn"]
-        db.remove_from_cart(cur, conn, username, prod_id)
-        #conn.commit() 
+        primary_id = request.form["productbtn"]
+        print(primary_id) 
+        db.remove_from_cart(cur, conn, username, primary_id)
         
     products = db.get_cart(cur, username)
     product_form = ProductForm()
